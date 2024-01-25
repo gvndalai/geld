@@ -1,13 +1,13 @@
 import React from "react";
-import { Tugrug } from "@/components/icons/tugrug";
-import { Button } from "@/components/Button";
-import { Logo } from "@/components/Logo";
 import { useRouter } from "next/router";
+import { Logo } from "@/components/Logo";
+import { Button } from "@/components/Button";
+import { Cash } from "@/components/icons/Cash";
 
-const SignUpInformation = () => {
+const SignupInformationSecond = () => {
   const router = useRouter();
   const routering = () => {
-    router.push("/signup-information-second");
+    router.push("/signup-finished");
   };
   return (
     <div className="h-screen w-screen flex flex-col items-center gap-[141px]">
@@ -16,7 +16,7 @@ const SignUpInformation = () => {
         <div>
           <ul className="steps steps-vertical lg:steps-horizontal w-[240px]">
             <li className="step step-primary text-[14px]">Currency </li>
-            <li className="step text-[14px]">Balance </li>
+            <li className="step step-primary text-[14px]">Balance </li>
             <li className="step text-[14px]">Finish</li>
           </ul>
         </div>
@@ -24,21 +24,18 @@ const SignUpInformation = () => {
       <div className="flex flex-col gap-[32px] w-[384px]">
         <div className="flex flex-col gap-[24px]">
           <div className="flex flex-col items-center gap-[16px]">
-            <Tugrug />
-            <h1 className="text-[24px]">Select base currency</h1>
+            <Cash />
+            <h1 className="text-[24px]">Set up your cash Balance</h1>
           </div>
           <div className="flex flex-col gap-[16px]">
-            <select
+            <input
               className="w-full h-fit flex flex-col items-center p-4 border border-solid border-gray-300 rounded-[8px]"
-              aria-placeholder="Choose a currency"
-            >
-              <option className="text-gray-500">choose a currency</option>
-              <option value="tugrug">MNT - Mongolian Tugrik</option>
-            </select>
+              type="text"
+              placeholder="Wallet Balance"
+            />
+
             <p className="text-[12px]">
-              Your base currency should be the one you use most often. All
-              transaction in other currencies will be calculated based on this
-              one{" "}
+              How much cash do you have in your wallet?
             </p>
           </div>
         </div>
@@ -49,4 +46,4 @@ const SignUpInformation = () => {
   );
 };
 
-export default SignUpInformation;
+export default SignupInformationSecond;

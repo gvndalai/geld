@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Logo } from "@/components/Logo";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 const Signup = () => {
+  const router = useRouter();
+
   const [nameValue, setNameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
@@ -27,7 +30,7 @@ const Signup = () => {
         body: JSON.stringify(inputData),
       });
 
-      // Handle the response as needed (check if successful, show errors, etc.)
+      router.push("/signup-information");
       console.log("Signup response:", response);
     } catch (error) {
       console.error("Error during signup:", error);
@@ -36,7 +39,7 @@ const Signup = () => {
 
   return (
     <div className="w-screen flex">
-      <div className="bg-blue-600 h-screen w-full"></div>
+      <div className="bg-slate-700 h-screen w-full"></div>
       <div className="w-full bg-white flex items-center justify-center">
         <div className="flex flex-col items-center gap-[40px] w-[384px]">
           <Logo />
@@ -77,7 +80,7 @@ const Signup = () => {
             <button
               type="button"
               onClick={handleSignup}
-              className="bg-blue-600 w-[384px] h-[48px] rounded-full text-white font-normal text-[20px] flex items-center justify-center"
+              className="bg-slate-700 w-[384px] h-[48px] rounded-full text-white font-normal text-[20px] flex items-center justify-center"
             >
               Sign up
             </button>

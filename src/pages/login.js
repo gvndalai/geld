@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { useRouter } from "next/navigation";
 export default function Login() {
+  const router = useRouter();
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
   const handleInputChange = (e, setter) => {
     setter(e.target.value);
   };
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
+    setIsLoading(true);
+
     const inputData = {
       email: emailValue,
       password: passwordValue,
@@ -24,7 +29,7 @@ export default function Login() {
         body: JSON.stringify(inputData),
       });
 
-      // Handle the response as needed (check if successful, show errors, etc.)
+      router.push("/dashboard");
       console.log("Login response:", response);
     } catch (error) {
       console.error("Error during login:", error);
@@ -44,7 +49,7 @@ export default function Login() {
                 Welcome back, Please enter your details
               </p>
             </div>
-            <div className="flex flex-col w-full gap-4">
+            <form className="flex flex-col w-full gap-4" onSubmit={handleLogin}>
               <input
                 placeholder="Email"
                 type="text"
@@ -54,19 +59,21 @@ export default function Login() {
               ></input>
               <input
                 placeholder="Password"
-                type="text"
+                type="password"
                 className="w-full h-12 flex items-center p-4 border border-solid border-gray-300 rounded-[8px]"
                 value={passwordValue}
                 onChange={(e) => handleInputChange(e, setPasswordValue)}
               ></input>
+
               <button
                 type="submit"
-                className="bg-blue-600 w-[384px] h-[48px] rounded-full text-white  font-normal text-[20px]"
+                className="bg-slate-700 w-[384px] h-[48px] rounded-full text-white  font-normal text-[20px]"
                 onClick={handleLogin}
+                disabled={isLoading}
               >
-                Log in
+                {isLoading ? "Logging in..." : "Log in"}
               </button>
-            </div>
+            </form>
             <div className="flex">
               <div>Don’t have account?</div>
               <Link className="px-[12px] text-blue-600" href="/signup">
@@ -75,7 +82,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="bg-blue-600 h-screen w-full"></div>
+        <div className="bg-slate-700 h-screen w-full"></div>
       </div>
     </>
   );
