@@ -1,16 +1,17 @@
 import React from "react";
 import { Icon } from "./icons/Icon";
 import { Button } from "./Button";
+import Link from "next/link";
 
 export const Header = () => {
   return (
     <div className="flex flex-col items-center">
-      <div className="flex items-center w-[1200px] px-[120px] py-[16px] justify-between">
+      <div className="flex items-center w-[1440px] px-[120px] py-[16px] justify-between">
         <div className="flex gap-[24px] ">
           {" "}
           <Icon />
-          <div>Dashboard</div>
-          <div>Records</div>
+          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/records">Records</Link>
         </div>
         <div className="flex gap-[24px] items-center">
           <Button text="+ Record" />

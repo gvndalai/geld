@@ -6,14 +6,17 @@ export default function Login() {
   const router = useRouter();
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null); // New state for error message
 
   const handleInputChange = (e, setter) => {
     setter(e.target.value);
   };
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
+    setError(null); // Reset error state on each login attempt
 
     const inputData = {
       email: emailValue,
@@ -29,12 +32,23 @@ export default function Login() {
         body: JSON.stringify(inputData),
       });
 
-      router.push("/dashboard");
-      console.log("Login response:", response);
+      if (response.ok) {
+        router.push("/dashboard");
+      } else {
+        // Handle unsuccessful login
+        const errorMessage = await response.text(); // Assuming the server sends an error message
+        setError(
+          errorMessage || "Login failed. Please check your credentials."
+        );
+      }
     } catch (error) {
       console.error("Error during login:", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
     <>
       <div className="w-screen flex">
@@ -73,6 +87,11 @@ export default function Login() {
               >
                 {isLoading ? "Logging in..." : "Log in"}
               </button>
+              {error && (
+                <div className="text-red-500 font-roboto text-[14px]">
+                  {error}
+                </div>
+              )}
             </form>
             <div className="flex">
               <div>Don’t have account?</div>
