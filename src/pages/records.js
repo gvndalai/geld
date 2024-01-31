@@ -8,6 +8,14 @@ import { Form } from "@/components/Form";
 
 const Records = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [amountRange, setAmountRange] = useState(0);
+
+  const handleCloseForm = () => {
+    setFormVisible(false);
+  };
+  const handleAmountRangeChange = (e) => {
+    setAmountRange(parseInt(e.target.value, 10));
+  };
   return (
     <>
       <div className=" flex flex-col items-center">
@@ -68,11 +76,10 @@ const Records = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-[16px]">
-                {" "}
                 <h1 className="text-[16px] font-semibold">Amount Range</h1>
                 <div className="grid gap-[16px] grid-cols-2">
                   <div className="h-[48px] p-[16px] bg-gray-100 rounded-[8px] border-2 flex items-center">
-                    0
+                    {amountRange}
                   </div>
                   <div className="h-[48px] p-[16px] bg-gray-100 rounded-[8px] border-2 flex items-center">
                     1000
@@ -82,7 +89,9 @@ const Records = () => {
                   <input
                     type="range"
                     min={0}
-                    max="1000"
+                    max={1000}
+                    value={amountRange}
+                    onChange={handleAmountRangeChange}
                     className="range range-primary"
                   />
                 </div>
@@ -107,8 +116,11 @@ const Records = () => {
                 <div className="p-[16px] border-2 flex justify-between bg-white rounded-[8px] items-center">
                   <div>
                     <div className="form-control flex flex-row items-center gap-[16px]">
-                      <label className="label cursor-pointer">
-                        <input type="checkbox" className="checkbox" />
+                      <label className="label cursor-pointer flex justify-start gap-[8px]">
+                        <input
+                          type="checkbox"
+                          className="checkbox checkbox-primary"
+                        />
                       </label>
                       <div>Select All</div>
                     </div>
@@ -120,7 +132,7 @@ const Records = () => {
           </div>
         </div>
       </div>
-      {formVisible && <Form />}
+      {formVisible && <Form onClose={handleCloseForm} />}
     </>
   );
 };

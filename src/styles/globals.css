@@ -35,4 +35,25 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
+.custom-input {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  padding: 10px;
+  text-align: left;
+}
+.container {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+}
+/* select:first-child {
+  color: #999;
+} */
+/* select:required:invalid {
+  color: gray;
+}
+/* option[value=""][disabled] {
+  display: none;
+} */
+/* option {
+  color: black;
+} */ 
