@@ -22,7 +22,7 @@ const Records = () => {
         <Header />
         <div className="bg-gray-100 w-screen h-screen pt-[32px] flex flex-col items-center">
           <div className="flex gap-[24px] rounded-[12px] w-[1200px] ">
-            <div className="flex flex-col gap-[24px] w-[250px] bg-white rounded-[12px] py-[24px] px-[16px] border-2">
+            <div className="flex flex-col gap-[24px] w-[282px] bg-white rounded-[12px] py-[24px] px-[16px] border-2">
               <div className="flex flex-col gap-[24px]">
                 <h1 className="text-[24px] font-semibold">Records</h1>
                 <Button text="+ Add" onClick={() => setFormVisible(true)} />
@@ -97,7 +97,7 @@ const Records = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full flex flex-col gap-[24px]">
+            <div className="w-[894px] flex flex-col gap-[24px]">
               <div className="flex justify-between w-full">
                 <div className="join">
                   <button className="join-item btn bg-gray-200">«</button>

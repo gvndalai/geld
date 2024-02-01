@@ -38,6 +38,7 @@ export default function Login() {
         router.push("/dashboard");
       } else {
         // Handle unsuccessful login
+        alert("Incorrect password or email");
         const errorMessage = await response.text(); // Assuming the server sends an error message
         setError(
           errorMessage || "Login failed. Please check your credentials."
