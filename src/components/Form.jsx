@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import { CloseButton } from "./icons/CloseButton";
 import e from "cors";
 import { Error } from "./Error";
+import axios from "axios";
 
 export const Form = ({ onClose }) => {
   const [amountValue, setAmountValue] = useState("");
@@ -12,9 +13,9 @@ export const Form = ({ onClose }) => {
   const [noteValue, setNoteValue] = useState("");
   const [formVisible, setFormVisible] = useState(false);
   const [error, setError] = useState(false);
-  const [toggleExpense, setToggleExpense] = useState(false);
+  const [toggleExpense, setToggleExpense] = useState(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -33,7 +34,13 @@ export const Form = ({ onClose }) => {
         date: dateValue,
         amount: amountValue,
         note: noteValue,
+        type: toggleExpense ? "EXP" : "INC",
       };
+
+      // Call the createTransaction function with formData as an argument
+      await createTransaction(formData);
+
+      // Clear form values
       setCategoryValue("");
       setPayeeValue("");
       setAmountValue("");
@@ -41,12 +48,31 @@ export const Form = ({ onClose }) => {
       setDateValue("");
       setNoteValue("");
       onClose();
-      console.log(formData);
     }
   };
 
+  const createTransaction = async (formData) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/transaction",
+        formData
+      );
+
+      if (response.status !== 201) {
+        console.error(
+          "Transaction creation failed with status:",
+          response.status
+        );
+      }
+
+      const responseData = response.data;
+      console.log("Transaction created successfully:", responseData);
+    } catch (error) {
+      console.error("Error during creating a transaction", error);
+    }
+  };
   const closeButton = () => {
-    setFormVisible(false); // Change from setFormVisible(true) to setFormVisible(false)
+    setFormVisible(false);
     onClose();
   };
 
@@ -64,7 +90,11 @@ export const Form = ({ onClose }) => {
                 >
                   Add Record
                 </label>
-                <button className="btn btn-square" onClick={closeButton}>
+                <button
+                  className="btn btn-square"
+                  onClick={closeButton}
+                  type="button"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
@@ -86,33 +116,33 @@ export const Form = ({ onClose }) => {
 
               <div className="grid grid-cols-2 gap-[44px] pt-[16px] ">
                 <div className="flex flex-col gap-[36px] pb-[24px]">
-                  <div className="grid grid-cols-2 bg-[#F3F4F6]  rounded-full ">
-                    <div className="flex">
-                      <button
-                        onClick={(e) => {
-                          setToggleExpense(!toggleExpense);
-                          e.preventDefault();
-                        }}
-                        className={`btn shadow-none btn-primary rounded-full w-44 ${
-                          toggleExpense && "bg-[#F3F4F6] border-none text-black"
-                        }`}
-                      >
-                        Expense
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          setToggleExpense(!toggleExpense); // Assuming you have a separate state for Income
-                          e.preventDefault();
-                        }}
-                        className={`btn shadow-none btn-[#F3F4F6] rounded-full w-44 hover:bg-[#16A34A] hover:border-[#16A34A] ${
-                          toggleExpense
-                            ? "bg-[#16A34A] text-white"
-                            : "bg-[#F3F4F6] text-black"
-                        }`}
-                      >
-                        Income
-                      </button>
-                    </div>
+                  <div className="grid grid-cols-2 gap-[12px] rounded-full overflow-hidden bg-gray-100">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setToggleExpense(true);
+                      }}
+                      className={`shadow-none rounded-full h-[40px] w-44 ${
+                        toggleExpense
+                          ? "bg-blue-600 border-none "
+                          : "hover:bg-blue-200"
+                      }`}
+                    >
+                      Expense
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setToggleExpense(false);
+                      }}
+                      className={`shadow-none rounded-full h-[40px] w-44 ${
+                        !toggleExpense
+                          ? "bg-[#16A34A] text-white"
+                          : "hover:bg-green-200"
+                      }`}
+                    >
+                      Income
+                    </button>
                   </div>
                   <div>
                     Amount
@@ -169,8 +199,10 @@ export const Form = ({ onClose }) => {
                   {error && <Error onClose={() => setError(false)} />}
                   <button
                     type="submit"
-                    className={`btn btn-primary w-full h-[48px] rounded-full text-white font-normal text-[20px] border-none shadow-none ${
-                      toggleExpense && "bg-[#16A34A]"
+                    className={`shadow-none rounded-full h-[48px] text-white text-[20px] w-full ${
+                      toggleExpense
+                        ? "bg-blue-600 border-none hover:bg-blue-400 "
+                        : "bg-[#16A34A] hover:bg-green-400 "
                     }`}
                   >
                     + Add record

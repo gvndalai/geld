@@ -1,17 +1,22 @@
 import React from "react";
 import { useState } from "react";
 import { Header } from "@/components/Header";
-import { Button } from "@/components/Button";
 import { InvisibleButton } from "@/components/icons/InvisibleButton";
 import { More } from "@/components/icons/More";
 import { Form } from "@/components/Form";
+import { Plus } from "@/components/icons/Plus";
+import { AddCategory } from "@/components/AddCategory";
 
 const Records = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [amountRange, setAmountRange] = useState(0);
+  const [addCategoryVisible, setAddCategoryVisible] = useState(false);
 
   const handleCloseForm = () => {
     setFormVisible(false);
+  };
+  const handleAddCategory = () => {
+    setAddCategoryVisible(false);
   };
   const handleAmountRangeChange = (e) => {
     setAmountRange(parseInt(e.target.value, 10));
@@ -25,7 +30,12 @@ const Records = () => {
             <div className="flex flex-col gap-[24px] w-[282px] bg-white rounded-[12px] py-[24px] px-[16px] border-2">
               <div className="flex flex-col gap-[24px]">
                 <h1 className="text-[24px] font-semibold">Records</h1>
-                <Button text="+ Add" onClick={() => setFormVisible(true)} />
+                <button
+                  className="btn btn-primary rounded-full text-[20px]"
+                  onClick={() => setFormVisible(true)}
+                >
+                  + Add
+                </button>
               </div>
               <div>
                 <input
@@ -72,6 +82,13 @@ const Records = () => {
                       <h1>Food & Drink</h1>
                     </div>
                     <More />
+                  </div>
+                  <div
+                    className="flex items-center gap-[8px] btn btn-sm"
+                    onClick={() => setAddCategoryVisible(true)}
+                  >
+                    {" "}
+                    <Plus /> <p>Add category</p>
                   </div>
                 </div>
               </div>
@@ -133,6 +150,7 @@ const Records = () => {
         </div>
       </div>
       {formVisible && <Form onClose={handleCloseForm} />}
+      {addCategoryVisible && <AddCategory onClose={handleAddCategory} />}
     </>
   );
 };

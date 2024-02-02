@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Logo } from "@/components/Logo";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import axios from "axios";
 
 const Signup = () => {
   const router = useRouter();
@@ -22,13 +23,10 @@ const Signup = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputData),
-      });
+      const response = await axios.post(
+        "http://localhost:8080/signup",
+        inputData
+      );
 
       router.push("/signup-information");
       console.log("Signup response:", response);
