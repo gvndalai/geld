@@ -1,16 +1,31 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { InvisibleButton } from "@/components/icons/InvisibleButton";
 import { More } from "@/components/icons/More";
 import { Form } from "@/components/Form";
 import { Plus } from "@/components/icons/Plus";
+import axios from "axios";
 import { AddCategory } from "@/components/AddCategory";
 
 const Records = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [amountRange, setAmountRange] = useState(0);
+  const [transactions, setTransactions] = useState([]);
   const [addCategoryVisible, setAddCategoryVisible] = useState(false);
+  useEffect(() => {
+    // Fetch data from "http://localhost:8080/transaction" when the component mounts
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/transaction");
+        setTransactions(response.data);
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleCloseForm = () => {
     setFormVisible(false);
@@ -129,7 +144,7 @@ const Records = () => {
                   </select>
                 </div>
               </div>
-              <div className=" flex flex-col">
+              <div className=" flex flex-col gap-6">
                 <div className="p-[16px] border-2 flex justify-between bg-white rounded-[8px] items-center">
                   <div>
                     <div className="form-control flex flex-row items-center gap-[16px]">
@@ -142,7 +157,39 @@ const Records = () => {
                       <div>Select All</div>
                     </div>
                   </div>
-                  <div className="text-gray-300">- 35,500₮</div>
+                  <div className="text-gray-300">₮</div>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <p>Today</p>
+                  <div className="flex flex-col gap-3">
+                    {transactions.map((transaction) => (
+                      <div
+                        className="p-[16px] border-2 flex justify-between bg-white rounded-[8px] items-center"
+                        key={transaction.id}
+                      >
+                        <div>
+                          <div className="form-control flex flex-row items-center gap-[16px]">
+                            <div className="relative w-[40px] h-[40px] rounded-full bg-[#0166FF]  ">
+                              <div className="absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                🏠
+                              </div>
+                            </div>
+                            <div>
+                              <p className="text-[16px]">
+                                {transaction.description}
+                              </p>
+                              <p className="text-[12px] text-gray-500">
+                                {transaction.transactiontime}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-gray-300">
+                          {transaction.amount}₮
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

@@ -15,10 +15,20 @@ export default function Login() {
     setter(e.target.value);
   };
 
+  const togglePassword = () => {
+    const passwordInput = document.getElementById("passwordInput");
+
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+    } else {
+      passwordInput.type = "password";
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null); // Reset error state on each login attempt
+    setError(null);
 
     const inputData = {
       email: emailValue,
@@ -35,11 +45,14 @@ export default function Login() {
       });
 
       if (response.ok) {
+        const userId = await response.json();
+        const { token, id } = userId;
+        localStorage.setItem("token", token);
+        localStorage.setItem("id", id);
         router.push("/dashboard");
       } else {
         // Handle unsuccessful login
-        alert("Incorrect password or email");
-        const errorMessage = await response.text(); // Assuming the server sends an error message
+        const errorMessage = await response.text();
         setError(
           errorMessage || "Login failed. Please check your credentials."
         );
@@ -81,13 +94,21 @@ export default function Login() {
                   value={emailValue}
                   onChange={(e) => handleInputChange(e, setEmailValue)}
                 ></input>
-                <input
-                  placeholder="Password"
-                  type="password"
-                  className="w-full h-12 flex items-center p-4 border border-solid border-gray-300 rounded-[8px]"
-                  value={passwordValue}
-                  onChange={(e) => handleInputChange(e, setPasswordValue)}
-                ></input>
+                <div className="flex gap-3 items-center">
+                  <input
+                    id="passwordInput"
+                    placeholder="Password"
+                    type="password"
+                    className="w-full h-12 flex items-center p-4 border border-solid border-gray-300 rounded-[8px]"
+                    value={passwordValue}
+                    onChange={(e) => handleInputChange(e, setPasswordValue)}
+                  ></input>
+                  <input
+                    type="checkbox"
+                    className="checkbox checkbox-primary"
+                    onClick={togglePassword}
+                  />
+                </div>
 
                 <button
                   type="submit"

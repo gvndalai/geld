@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-// import { CloseButton } from "./icons/CloseButton";
-import e from "cors";
 import { Error } from "./Error";
 import axios from "axios";
 
-export const Form = ({ onClose }) => {
+export const Form = ({ onClose, token }) => {
   const [amountValue, setAmountValue] = useState("");
   const [timeValue, setTimeValue] = useState("");
   const [categoryValue, setCategoryValue] = useState("");
@@ -37,10 +35,8 @@ export const Form = ({ onClose }) => {
         type: toggleExpense ? "EXP" : "INC",
       };
 
-      // Call the createTransaction function with formData as an argument
-      await createTransaction(formData);
+      await createTransaction(formData, token);
 
-      // Clear form values
       setCategoryValue("");
       setPayeeValue("");
       setAmountValue("");
@@ -51,11 +47,16 @@ export const Form = ({ onClose }) => {
     }
   };
 
-  const createTransaction = async (formData) => {
+  const createTransaction = async (formData, token) => {
     try {
       const response = await axios.post(
         "http://localhost:8080/transaction",
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.status !== 201) {
@@ -71,6 +72,7 @@ export const Form = ({ onClose }) => {
       console.error("Error during creating a transaction", error);
     }
   };
+
   const closeButton = () => {
     setFormVisible(false);
     onClose();
@@ -124,7 +126,7 @@ export const Form = ({ onClose }) => {
                       }}
                       className={`shadow-none rounded-full h-[40px] w-44 ${
                         toggleExpense
-                          ? "bg-blue-600 border-none "
+                          ? "bg-blue-600 border-none text-white"
                           : "hover:bg-blue-200"
                       }`}
                     >
@@ -148,7 +150,7 @@ export const Form = ({ onClose }) => {
                     Amount
                     <input
                       id="inputField"
-                      name="amount" // Add the name attribute
+                      name="amount"
                       type="number"
                       className="w-full h-12 border border-solid border-gray-300 rounded-md p-2"
                       value={amountValue}
