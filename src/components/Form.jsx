@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Error } from "./Error";
 import axios from "axios";
+import { useEffect } from "react";
 
 export const Form = ({ onClose, token }) => {
   const [amountValue, setAmountValue] = useState("");
@@ -12,9 +13,12 @@ export const Form = ({ onClose, token }) => {
   const [formVisible, setFormVisible] = useState(false);
   const [error, setError] = useState(false);
   const [toggleExpense, setToggleExpense] = useState(true);
+  const [category, setCategory] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("id");
 
     if (
       !categoryValue.trim() ||
@@ -25,6 +29,7 @@ export const Form = ({ onClose, token }) => {
       setError(true);
     } else {
       setError(false);
+
       const formData = {
         time: timeValue,
         category: categoryValue,
@@ -33,6 +38,7 @@ export const Form = ({ onClose, token }) => {
         amount: amountValue,
         note: noteValue,
         type: toggleExpense ? "EXP" : "INC",
+        userId: userId,
       };
 
       await createTransaction(formData, token);
@@ -46,6 +52,19 @@ export const Form = ({ onClose, token }) => {
       onClose();
     }
   };
+  useEffect(() => {
+    // Fetch data from "http://localhost:8080/transaction" when the component mounts
+    const fetchCategoryData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/category");
+        setCategory(response.data);
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+      }
+    };
+
+    fetchCategoryData();
+  }, []);
 
   const createTransaction = async (formData, token) => {
     try {
@@ -67,6 +86,7 @@ export const Form = ({ onClose, token }) => {
       }
 
       const responseData = response.data;
+      console.log("responseData", responseData);
       console.log("Transaction created successfully:", responseData);
     } catch (error) {
       console.error("Error during creating a transaction", error);
@@ -160,20 +180,19 @@ export const Form = ({ onClose, token }) => {
                   </div>
 
                   <div className="flex flex-col gap-[5px]">
-                    Category{" "}
                     <select
                       className="w-full h-fit flex flex-col items-center p-2 border border-solid border-gray-300 rounded-[8px]"
                       aria-placeholder="Choose a currency"
                       value={categoryValue}
                       onChange={(e) => setCategoryValue(e.target.value)}
                     >
-                      <option hidden>Choose a category</option>
-                      <option value="home">Home</option>
-                      <option value="gift">Gift </option>
-                      <option value="food">Food </option>
-                      <option value="drink">Drink </option>
-                      <option value="taxi">Taxi </option>
-                      <option value="shopping">Shopping </option>
+                      Category{" "}
+                      {category.map((category) => (
+                        <>
+                          <option hidden>Choose a category</option>
+                          <option value={category.id}>{category.name}</option>
+                        </>
+                      ))}
                     </select>
                   </div>
                   <div className="grid grid-cols-2 gap-[12px] ">

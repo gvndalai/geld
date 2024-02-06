@@ -13,6 +13,9 @@ const Records = () => {
   const [amountRange, setAmountRange] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [addCategoryVisible, setAddCategoryVisible] = useState(false);
+  const [selectedType, setSelectedType] = useState("All");
+  const [category, setCategory] = useState([]);
+  const [userId, setUserId] = useState("");
   useEffect(() => {
     // Fetch data from "http://localhost:8080/transaction" when the component mounts
     const fetchData = async () => {
@@ -24,7 +27,18 @@ const Records = () => {
       }
     };
 
+    const fetchCategoryData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/category");
+        setCategory(response.data);
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+      }
+    };
+
+    setUserId(localStorage.getItem("id"));
     fetchData();
+    fetchCategoryData();
   }, []);
 
   const handleCloseForm = () => {
@@ -36,13 +50,17 @@ const Records = () => {
   const handleAmountRangeChange = (e) => {
     setAmountRange(parseInt(e.target.value, 10));
   };
+  const handleTypeChange = (type) => {
+    setSelectedType(type);
+  };
+
   return (
     <>
       <div className=" flex flex-col items-center">
         <Header />
-        <div className="bg-gray-100 w-screen h-screen pt-[32px] flex flex-col items-center">
+        <div className="bg-gray-100 w-screen h-fit min-h-screen pt-[32px] flex flex-col items-center">
           <div className="flex gap-[24px] rounded-[12px] w-[1200px] ">
-            <div className="flex flex-col gap-[24px] w-[282px] bg-white rounded-[12px] py-[24px] px-[16px] border-2">
+            <div className="flex flex-col gap-[24px] w-[282px] bg-white rounded-[12px] py-[24px] px-[16px] border-2 h-fit ">
               <div className="flex flex-col gap-[24px]">
                 <h1 className="text-[24px] font-semibold">Records</h1>
                 <button
@@ -64,22 +82,34 @@ const Records = () => {
                 <div className="form-control">
                   <label className="label cursor-pointer flex justify-start gap-[8px]">
                     <input
-                      type="checkbox"
-                      className="checkbox checkbox-primary"
+                      type="radio"
+                      name="type"
+                      value="All"
+                      className="radio radio-primary"
+                      checked={selectedType === "All"}
+                      onChange={() => handleTypeChange("All")}
                     />
                     <span className="label-text">All</span>
                   </label>
                   <label className="label cursor-pointer flex justify-start gap-[8px]">
                     <input
-                      type="checkbox"
-                      className="checkbox checkbox-primary"
+                      type="radio"
+                      name="type"
+                      value="INC"
+                      className="radio radio-primary"
+                      checked={selectedType === "INC"}
+                      onChange={() => handleTypeChange("INC")}
                     />
                     <span className="label-text">Income</span>
                   </label>
                   <label className="label cursor-pointer flex justify-start gap-[8px]">
                     <input
-                      type="checkbox"
-                      className="checkbox checkbox-primary"
+                      type="radio"
+                      name="type"
+                      value="EXP"
+                      className="radio radio-primary"
+                      checked={selectedType === "EXP"}
+                      onChange={() => handleTypeChange("EXP")}
                     />
                     <span className="label-text">Expense</span>
                   </label>
@@ -91,13 +121,16 @@ const Records = () => {
                   <p className="text-gray-300">Clear</p>
                 </div>
                 <div className="flex flex-col gap-[8px]">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-[8px]">
-                      <InvisibleButton />
-                      <h1>Food & Drink</h1>
+                  {category.map((category) => (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-[8px]">
+                        <InvisibleButton />
+                        <h1>{category.name}</h1>
+                      </div>
+                      <More />
                     </div>
-                    <More />
-                  </div>
+                  ))}
+
                   <div
                     className="flex items-center gap-[8px] btn btn-sm"
                     onClick={() => setAddCategoryVisible(true)}
@@ -162,33 +195,61 @@ const Records = () => {
                 <div className="flex flex-col gap-3">
                   <p>Today</p>
                   <div className="flex flex-col gap-3">
-                    {transactions.map((transaction) => (
-                      <div
-                        className="p-[16px] border-2 flex justify-between bg-white rounded-[8px] items-center"
-                        key={transaction.id}
-                      >
-                        <div>
-                          <div className="form-control flex flex-row items-center gap-[16px]">
-                            <div className="relative w-[40px] h-[40px] rounded-full bg-[#0166FF]  ">
-                              <div className="absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                🏠
+                    {transactions
+                      .filter((transaction) =>
+                        selectedType === "All"
+                          ? transaction.userid === userId
+                          : transaction.userid === userId &&
+                            transaction.transactiontype === selectedType
+                      )
+                      .map((transaction) => {
+                        if (transaction.userid === userId) {
+                          const selectedCategory = category.find(
+                            (cat) => cat.id === transaction.categoryid
+                          );
+
+                          return (
+                            <div
+                              className="p-[16px] border-2 flex justify-between bg-white rounded-[8px] items-center"
+                              key={transaction.id}
+                            >
+                              <div>
+                                <div className="form-control flex flex-row items-center gap-[16px]">
+                                  <div className="relative w-[40px] h-[40px] rounded-full bg-[#0166FF]">
+                                    {selectedCategory && (
+                                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                        {selectedCategory.category_image}
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div>
+                                    <p className="text-[16px]">
+                                      {transaction.description}
+                                    </p>
+                                    <p className="text-[12px] text-gray-500">
+                                      {transaction.transactiontime}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                className={`text-gray-300 ${
+                                  transaction.transactiontype === "EXP"
+                                    ? "text-red-500"
+                                    : "text-green-500"
+                                }`}
+                              >
+                                {`${
+                                  transaction.transactiontype === "EXP"
+                                    ? "-"
+                                    : "+"
+                                }${transaction.amount}₮`}
                               </div>
                             </div>
-                            <div>
-                              <p className="text-[16px]">
-                                {transaction.description}
-                              </p>
-                              <p className="text-[12px] text-gray-500">
-                                {transaction.transactiontime}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-gray-300">
-                          {transaction.amount}₮
-                        </div>
-                      </div>
-                    ))}
+                          );
+                        }
+                        return null;
+                      })}
                   </div>
                 </div>
               </div>
