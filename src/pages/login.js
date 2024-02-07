@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
+import axios from "axios";
 
 export default function Login() {
   const router = useRouter();
@@ -36,26 +37,18 @@ export default function Login() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputData),
-      });
+      const response = await axios.post(
+        "http://localhost:8080/login",
+        inputData
+      );
 
-      if (response.ok) {
-        const userId = await response.json();
-        const { token, id } = userId;
+      if (response.status === 200) {
+        const { token, id } = response.data;
         localStorage.setItem("token", token);
         localStorage.setItem("id", id);
         router.push("/dashboard");
       } else {
-        // Handle unsuccessful login
-        const errorMessage = await response.text();
-        setError(
-          errorMessage || "Login failed. Please check your credentials."
-        );
+        setError("Login failed. Please check your credentials.");
       }
     } catch (error) {
       console.error("Error during login:", error);

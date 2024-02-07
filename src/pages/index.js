@@ -13,7 +13,6 @@ export default function Home() {
           >
             Let's get started
           </Link>
-          <div class="loader"></div>
         </div>
       </div>
     </>
