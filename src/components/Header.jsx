@@ -1,28 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "./icons/Icon";
 import { Button } from "./Button";
 import Link from "next/link";
-import { Form } from "./Form";
-import { useState } from "react";
 import { useRouter } from "next/router";
 
 export const Header = ({ onOpenForm }) => {
-  // const router = useRouter();
-  // useEffect (() =>{
-  // const token = localStorage.getItem()
-  // })
-  // const DashboardRouting = () => {
-  //   if
-  // };
+  const [theme, setTheme] = useState("light");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const localTheme = localStorage.getItem("theme");
+      setTheme(localTheme || "light");
+      document
+        .querySelector("html")
+        .setAttribute("data-theme", localTheme || "light");
+    }
+  }, []);
+
+  const handleToggle = (e) => {
+    if (typeof window !== "undefined") {
+      const newTheme = e.target.checked ? "dark" : "light";
+      setTheme(newTheme);
+      localStorage.setItem("theme", newTheme);
+      document.querySelector("html").setAttribute("data-theme", newTheme);
+    }
+  };
   return (
     <>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center navbar bg-base-100 shadow-md">
         <div className="flex items-center w-[1440px] px-[120px] py-[16px] justify-between">
           <div className="flex gap-[24px] ">
             {" "}
             <Icon />
-            <Link href="/dashboard">Dashboard</Link>
-            <Link href="/records">Records</Link>
+            <Link
+              href="/dashboard"
+              className={router.pathname === "/dashboard" ? "font-bold" : ""}
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/records"
+              className={router.pathname === "/records" ? "font-bold" : ""}
+            >
+              Records
+            </Link>
           </div>
           <div className="flex gap-[24px] items-center">
             <label className="swap swap-rotate">
@@ -30,7 +52,8 @@ export const Header = ({ onOpenForm }) => {
               <input
                 type="checkbox"
                 className="theme-controller"
-                value="synthwave"
+                value={theme === "dark"}
+                onChange={handleToggle}
               />
 
               {/* sun icon */}
@@ -55,8 +78,25 @@ export const Header = ({ onOpenForm }) => {
             <div className="flex items-center justify-center ">
               <img
                 src="empty-profile.jpg"
-                className="w-[40px] h-full rounded-full m-0 p-0"
+                className="w-[100px] h-[40px] rounded-full m-0 p-0"
               />
+            </div>
+            <div className="flex-none">
+              <button className="btn btn-square btn-ghost">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  className="inline-block w-5 h-5 stroke-current"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                  ></path>
+                </svg>
+              </button>
             </div>
           </div>
         </div>

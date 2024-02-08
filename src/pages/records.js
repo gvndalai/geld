@@ -58,9 +58,9 @@ const Records = () => {
     <>
       <div className=" flex flex-col items-center">
         <Header />
-        <div className="bg-gray-100 w-screen h-fit min-h-screen pt-[32px] flex flex-col items-center">
+        <div className=" w-screen h-fit min-h-screen pt-[32px] flex flex-col items-center">
           <div className="flex gap-[24px] rounded-[12px] w-[1200px] ">
-            <div className="flex flex-col gap-[24px] w-[282px] bg-white rounded-[12px] py-[24px] px-[16px] border-2 h-fit ">
+            <div className="flex flex-col gap-[24px] w-[282px] bg-base-100 rounded-[12px] py-[24px] px-[16px] border-[1px] h-fit ">
               <div className="flex flex-col gap-[24px]">
                 <h1 className="text-[24px] font-semibold">Records</h1>
                 <button
@@ -73,7 +73,7 @@ const Records = () => {
               <div>
                 <input
                   type="text"
-                  className="w-full h-[32px] rounded-[12px] bg-gray-100 py-[12px] px-[18px]"
+                  className="w-full h-[32px] rounded-[12px] bg-base-300 py-[12px] px-[18px]"
                   placeholder="Search"
                 ></input>
               </div>
@@ -121,15 +121,20 @@ const Records = () => {
                   <p className="text-gray-300">Clear</p>
                 </div>
                 <div className="flex flex-col gap-[8px]">
-                  {category.map((category) => (
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-[8px]">
-                        <InvisibleButton />
-                        <h1>{category.name}</h1>
+                  {category
+                    .filter((category) => category.userid === userId)
+                    .map((category) => (
+                      <div
+                        className="flex items-center justify-between"
+                        key={category.id}
+                      >
+                        <div className="flex items-center gap-[8px]">
+                          <InvisibleButton />
+                          <h1>{category.name}</h1>
+                        </div>
+                        <More />
                       </div>
-                      <More />
-                    </div>
-                  ))}
+                    ))}
 
                   <div
                     className="flex items-center gap-[8px] btn btn-sm"
@@ -143,10 +148,10 @@ const Records = () => {
               <div className="flex flex-col gap-[16px]">
                 <h1 className="text-[16px] font-semibold">Amount Range</h1>
                 <div className="grid gap-[16px] grid-cols-2">
-                  <div className="h-[48px] p-[16px] bg-gray-100 rounded-[8px] border-2 flex items-center">
+                  <div className="h-[48px] p-[16px] bg-base-300 rounded-[8px] border-[1px] flex items-center">
                     {amountRange}
                   </div>
-                  <div className="h-[48px] p-[16px] bg-gray-100 rounded-[8px] border-2 flex items-center">
+                  <div className="h-[48px] p-[16px] bg-base-300 rounded-[8px] border-[1px] flex items-center">
                     1000
                   </div>
                 </div>
@@ -165,20 +170,17 @@ const Records = () => {
             <div className="w-[894px] flex flex-col gap-[24px]">
               <div className="flex justify-between w-full">
                 <div className="join">
-                  <button className="join-item btn bg-gray-200">«</button>
-                  <button className="join-item btn bg-gray-200">
-                    Last 30 days
-                  </button>
-                  <button className="join-item btn bg-gray-200">»</button>
+                  <button className="join-item btn ">«</button>
+                  <button className="join-item btn ">Last 30 days</button>
+                  <button className="join-item btn ">»</button>
                 </div>
-                <div className="bg-white border-2 flex items-center rounded-[8px] p-[16px]">
-                  <select>
-                    <option>Most Recent</option>
-                  </select>
-                </div>
+
+                <select className="select select-bordered flex items-center w-[180px]">
+                  <option>Most Recent</option>
+                </select>
               </div>
               <div className=" flex flex-col gap-6">
-                <div className="p-[16px] border-2 flex justify-between bg-white rounded-[8px] items-center">
+                <div className="p-[16px] border-[1px] flex justify-between bg-base-100 rounded-[8px] items-center">
                   <div>
                     <div className="form-control flex flex-row items-center gap-[16px]">
                       <label className="label cursor-pointer flex justify-start gap-[8px]">
@@ -210,7 +212,7 @@ const Records = () => {
 
                           return (
                             <div
-                              className="p-[16px] border-2 flex justify-between bg-white rounded-[8px] items-center"
+                              className="p-[16px] border-[1px] flex justify-between bg-base-100 rounded-[8px] items-center"
                               key={transaction.id}
                             >
                               <div>

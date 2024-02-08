@@ -15,13 +15,13 @@ const Dashboard = ({ formVisible, onCloseForm }) => {
     <>
       <div className=" flex flex-col items-center">
         <Header onOpenForm={handleOpenForm} />
-        <div className="bg-gray-100 w-screen h-screen pt-[32px] flex flex-col items-center">
+        <div className=" w-screen h-screen pt-[32px] flex flex-col items-center">
           <div className="w-[1200px] flex flex-col gap-[24px]">
             <div className="grid grid-cols-3 gap-[24px] ">
               <div className="transform hover:scale-105">
                 <img src="Large.png"></img>
               </div>
-              <div className="bg-white rounded-[12px] pb-[24px] pr-[24px] pl-[24px] transform hover:scale-105">
+              <div className="shadow-md border-[1px] rounded-[12px] pb-[24px] pr-[24px] pl-[24px] transform hover:scale-105">
                 <div className="flex gap-[8px] items-center py-[16px] border-b-2 ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,7 @@ const Dashboard = ({ formVisible, onCloseForm }) => {
                   <p className="text-[16px] font-semibold">Your Income</p>
                 </div>
               </div>
-              <div className="bg-white rounded-[12px] pb-[24px] pr-[24px] pl-[24px] transform hover:scale-105">
+              <div className="shadow-md border-[1px] rounded-[12px] pb-[24px] pr-[24px] pl-[24px] transform hover:scale-105">
                 <div className="flex gap-[8px] items-center py-[16px] border-b-2   ">
                   <svg
                     width="8"
@@ -51,13 +51,13 @@ const Dashboard = ({ formVisible, onCloseForm }) => {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-[24px]">
-              <div className="bg-white rounded-[12px] px-[24px] transform hover:scale-105">
+              <div className="shadow-md border-[1px] rounded-[12px] px-[24px] transform hover:scale-105">
                 <div className="py-[16px] border-b-2 ">
                   <p>Income - Expense</p>
                 </div>
                 <div className="py-[32px] px-[24px]"></div>
               </div>
-              <div className="bg-white rounded-[12px] px-[24px] transform hover:scale-105">
+              <div className="shadow-md border-[1px] rounded-[12px] px-[24px] transform hover:scale-105">
                 <div className="py-[16px] border-b-2 ">
                   <p>Income - Expense</p>
                 </div>
@@ -66,7 +66,7 @@ const Dashboard = ({ formVisible, onCloseForm }) => {
                 </div>
               </div>
             </div>
-            <div className="w-full bg-white h-fit rounded-[12px] ">
+            <div className="w-full shadow-md border-[1px] h-fit rounded-[12px] ">
               <div className=" border-b-2 px-[24px] py-[16px] w-full">
                 Last Records
               </div>

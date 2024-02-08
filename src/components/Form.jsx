@@ -104,7 +104,7 @@ export const Form = ({ onClose, token }) => {
       <div className="w-screen h-screen relative">
         <div className="bg-black opacity-55 w-full h-full"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-[792px] bg-white p-8 rounded-md">
+          <div className="w-[792px] bg-base-100 p-8 rounded-md">
             <form onSubmit={handleSubmit}>
               <div className="flex justify-between items-center border-b-2 pb-5">
                 <label
@@ -139,7 +139,7 @@ export const Form = ({ onClose, token }) => {
 
               <div className="grid grid-cols-2 gap-[44px] pt-[16px] ">
                 <div className="flex flex-col gap-[36px] pb-[24px]">
-                  <div className="grid grid-cols-2 gap-[12px] rounded-full overflow-hidden bg-gray-100">
+                  <div className="grid grid-cols-2 gap-[12px] rounded-full overflow-hidden bg-base-100">
                     <button
                       type="button"
                       onClick={() => {

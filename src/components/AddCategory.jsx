@@ -9,8 +9,9 @@ export const AddCategory = ({ onClose }) => {
   const [categoryValue, setCategoryValue] = useState("");
   const [categoryIconValue, setCategoryIconValue] = useState("🏠");
 
-  console.log(categoryValue);
-  const handlesubmit = async () => {
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    const userId = localStorage.getItem("id");
     if (!categoryValue.trim()) {
       setError(true);
     } else {
@@ -18,6 +19,7 @@ export const AddCategory = ({ onClose }) => {
       const formData = {
         category: categoryValue,
         icon: categoryIconValue,
+        userid: userId,
       };
 
       await createCategory(formData);
