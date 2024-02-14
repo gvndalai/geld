@@ -54,7 +54,7 @@ export const AddCategory = ({ onClose }) => {
       <div className="w-screen h-screen relative">
         <div className="bg-black opacity-55 w-full h-full"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-[494px] h-fit bg-white p-8 rounded-md">
+          <div className="w-[494px] h-fit  bg-base-100 p-8 rounded-md">
             <form onSubmit={handlesubmit}>
               <div className="flex justify-between items-center border-b-2 pb-5">
                 <label

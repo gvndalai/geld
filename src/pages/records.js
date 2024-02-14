@@ -118,7 +118,7 @@ const Records = () => {
               <div className="flex flex-col gap-[16px]">
                 <div className="category-top flex justify-between">
                   <h1 className="text-[16px] font-semibold">Category</h1>
-                  <p className="text-gray-300">Clear</p>
+                  <p className="text-base-300 cursor-pointer">Clear</p>
                 </div>
                 <div className="flex flex-col gap-[8px]">
                   {category
