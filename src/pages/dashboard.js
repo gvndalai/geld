@@ -12,7 +12,7 @@ const Dashboard = ({ formVisible, onCloseForm }) => {
   const [category, setCategory] = useState([]);
   const [userId, setUserId] = useState("");
   const [transactions, setTransactions] = useState([]);
-  const [ barChartData, setBarChartData] = useState()
+  // const [ barChartData, setBarChartData] = useState()
   const handleOpenForm = () => {
     setFormVisible(true);
   };
@@ -111,9 +111,9 @@ const Dashboard = ({ formVisible, onCloseForm }) => {
                 <div className="py-[16px] border-b-2 ">
                   <p>Income - Expense</p>
                 </div>
-                <div className="py-[32px] px-[24px]">
+                {/* <div className="py-[32px] px-[24px]">
                   <BarChart chartData={}/>
-                </div>
+                </div> */}
               </div>
               <div className="shadow-md border-[1px] rounded-[12px] px-[24px] transform hover:scale-105">
                 <div className="py-[16px] border-b-2 ">
